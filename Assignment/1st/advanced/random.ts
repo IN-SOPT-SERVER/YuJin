@@ -50,10 +50,10 @@ const dinner: Dinner = {
         const serverpattzzang = array.find((name) => name.name === '권세훈');
         const buddybuddy = array.find((buddy) => buddy.group === '버디버디');
 
-        console.log(`제 코리곰탕 조는요! ${CORIGOMTANG?.name}, ${CORIGOMTANG?.name}입니다. 잘부탁드립니다...~!`);
-        console.log(`환승연애 .. 점 그리워 ~.. : ${POME?.name}, ${POME?.name}`);
-        console.log(`서버파트장 화이팅 ㅋ ㅋ ${serverpattzzang?.name}`);
-        console.log(`버디버디 조 화이팅이다 ~!~ 아자잣!@!@! ${buddybuddy?.name}, ${buddybuddy?.name}`);
+        console.log(`제 코리곰탕 조는요! ${CORIGOMTANG?.name}입니다. 잘부탁드립니다...~!`);
+        console.log(`환승연애 .. 점 그리워 ~.. : ${POME?.name}`);
+        console.log(`서버파트장 화이팅 ㅋ ㅋ ! ${serverpattzzang?.name}`);
+        console.log(`버디버디 조 화이팅이다 ~!~ 아자잣!@!@! ${buddybuddy?.name}`);
     },
 };
 
