@@ -1,4 +1,4 @@
-import Blog from "../interface/Blog";
+import Blog from "../interface/blog";
 export const blogData: Blog[] = [
     {
         blogId: 1,
