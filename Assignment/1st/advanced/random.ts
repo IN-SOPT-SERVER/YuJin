@@ -35,6 +35,7 @@ const dinner: Dinner = {
             group: "버디버디",
         },
     ],
+    menu: ['인절미치즈케이크', '고르곤졸라피자', '소금빵', '바게트', '매기', '연어', '회'],
     shuffle(array) {
         return array.sort(() => Math.random() - 0.5);
         /* 
@@ -44,16 +45,19 @@ const dinner: Dinner = {
     },
     organize(array) {
         this.shuffle(array);
+        this.shuffle(this.menu);
 
         const POME = array.find((pome) => pome.group === '환승연애');
         const CORIGOMTANG = array.find((corigomtang) => corigomtang.group === '코리곰탕');
         const serverpattzzang = array.find((name) => name.name === '권세훈');
         const buddybuddy = array.find((buddy) => buddy.group === '버디버디');
+        const dinnerMember = array.map((member) => member.name)
 
         console.log(`제 코리곰탕 조는요! ${CORIGOMTANG?.name}입니다. 잘부탁드립니다...~!`);
         console.log(`환승연애 .. 점 그리워 ~.. : ${POME?.name}`);
         console.log(`서버파트장 화이팅 ㅋ ㅋ ! ${serverpattzzang?.name}`);
         console.log(`버디버디 조 화이팅이다 ~!~ 아자잣!@!@! ${buddybuddy?.name}`);
+        console.log(`${dinnerMember[0]}과 ${dinnerMember[1]}은 ${this.menu[0]}와 ${this.menu[1]}을 드세요.`);
     },
 };
 
