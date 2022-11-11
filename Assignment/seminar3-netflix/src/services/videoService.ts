@@ -1,23 +1,60 @@
-import { video } from "../data/video";
+import { PrismaClient } from "@prisma/client";
 
-const getData = async (videoId: string) => {
-    return video[videoId];
-}
+const prisma = new PrismaClient();
 
-const postLike = async (videoId: string) => {
-    if (video[videoId].is_liked) {
-        video[videoId].is_liked = false;
-    } else {
-        video[videoId].is_liked = true;
-    }
-}
+//* 생성
+const createData = async (title: string, preview: string, is_series: boolean, actors: string[]) => {
+    const data = await prisma.video.create({
+        data: {
+            title, preview, is_series, actors,
+        },
+    });
+    return data;
+};
 
-const postSubscribe = async (videoId: string) => {
-    if (video[videoId].is_subscribed) {
-        video[videoId].is_subscribed = false;
-    } else {
-        video[videoId].is_subscribed = true;
-    }
-}
 
-export { getData, postLike, postSubscribe };
+//* 조회
+const getData = async () => {
+    const data = await prisma.video.findMany();
+    return data;
+};
+
+//* 업데이트
+const updateLike = async (video_id: number, is_liked: boolean) => {
+    const data = await prisma.video.update({
+        where: {
+            video_id
+        },
+        data: {
+            is_liked
+        }
+    })
+};
+
+//* 삭제
+const deleteData = async (video_id: number) => {
+    await prisma.video.delete({
+        where: {
+            video_id
+        },
+    });
+};
+
+const getVideoById = async (video_id: number) => {
+    const video = await prisma.video.findUnique({
+        where: {
+            id: video_id,
+        },
+    });
+    return video;
+};
+
+const videoService = {
+    createData,
+    getData,
+    updateLike,
+    deleteData,
+    getVideoById
+};
+
+export default videoService;
