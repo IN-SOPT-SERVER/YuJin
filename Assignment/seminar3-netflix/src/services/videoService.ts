@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 //* 생성
-const createData = async (title: string, preview: string, is_series: boolean, actors: string[]) => {
+const createData = async (title: string, preview: string, is_series: boolean, actors: Array<String>) => {
     const data = await prisma.video.create({
         data: {
             title, preview, is_series, actors,
@@ -16,6 +16,7 @@ const createData = async (title: string, preview: string, is_series: boolean, ac
 //* 조회
 const getData = async () => {
     const data = await prisma.video.findMany();
+    console.log(data);
     return data;
 };
 
@@ -43,7 +44,7 @@ const deleteData = async (video_id: number) => {
 const getVideoById = async (video_id: number) => {
     const video = await prisma.video.findUnique({
         where: {
-            id: video_id,
+            video_id,
         },
     });
     return video;

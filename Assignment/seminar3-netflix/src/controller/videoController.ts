@@ -20,6 +20,7 @@ const createVideo = async (req: Request, res: Response) => {
 //* 유저 전체 조회
 const getAllData = async (req: Request, res: Response) => {
     const data = await videoService.getData();
+    console.log(data);
     return res.status(200).json({ status: 200, message: "전체 조회 성공", data });
 };
 
