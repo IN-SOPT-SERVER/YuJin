@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int        @id(map: "User_pk") @unique(map: "User_id_uindex") @default(autoincrement())
+  name     String     @db.VarChar(50)
+  time     String     @db.VarChar(30)
+  distance String     @db.VarChar(50)
+  pace     String     @db.VarChar(50)
+  calorie  String     @db.VarChar(50)
+  date     String     @db.VarChar(50)
+  is_liked is_liked[]
+  run      run[]
+}
+
+model is_liked {
+  id       Int     @id(map: "is_liked_pk") @unique(map: "is_liked_id_uindex") @default(autoincrement())
+  user_id  Int
+  run_id   Int     @unique
+  is_liked Boolean @default(false)
+  run      run     @relation(fields: [run_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "is_liked_run_id_fk")
+  User     User    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "is_liked_user_id_fk")
+}
+
+model run {
+  id       Int       @id(map: "run_pk") @unique(map: "run_id_uindex") @default(autoincrement())
+  title    String    @db.VarChar(50)
+  routine  String    @db.VarChar(100)
+  stage    String    @db.VarChar(20)
+  user_id  Int
+  User     User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "run_user_id_fk")
+  is_liked is_liked?
+}
+
+model Member {
+  id       Int    @id(map: "user_pk") @unique(map: "user_id_uindex") @default(autoincrement())
+  userName String @db.VarChar(100)
+  age      Int?
+  email    String @db.VarChar(400)
+  password String @db.VarChar(400)
+}
