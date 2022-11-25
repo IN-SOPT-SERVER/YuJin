@@ -11,13 +11,13 @@ router.get("/:userId", auth, userController.getUserById);
 router.get('/', userController.getAllUser);
 
 //* 유저 정보 업데이트 - PATCH api/user/:userId
-router.patch('/:userId',
+router.patch('/:userId', auth,
     [body("name").notEmpty(), body("email").notEmpty(), body("password").isLength({ min: 6 })],
     userController.updateUser
 );
 
 //* 유저 삭제 - DELETE api/user:userId
-router.delete('/:userId', userController.deleteUser);
+router.delete('/:userId', auth, userController.deleteUser);
 
 //* 유저 생성 - POST api/user
 router.post(
