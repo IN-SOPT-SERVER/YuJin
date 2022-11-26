@@ -1,3 +1,4 @@
+import { MemberUpdateDTO } from './../interfaces/MemberUpdateDTO';
 import { PrismaClient } from "@prisma/client";
 import { MemberCreateDTO } from "../interfaces/MemberCreateDTO";
 const prisma = new PrismaClient();
@@ -31,26 +32,6 @@ const getAllUser = async () => {
   //findUnique : Unique한 컬럼에만 사용한다
   return data;
 };
-//* 유저 정보 업데이트
-const updateUser = async (userId: number, name: string) => {
-  const data = await prisma.member.update({
-    where: {
-      id: userId
-    },
-    data: {
-      userName: name
-    }
-  })
-};
-//* 유저 삭제
-const deleteUser = async (userId: number) => {
-  await prisma.member.delete({
-    where: {
-      id: userId,
-    },
-  });
-};
-
 
 //* userId로 유저 조회
 const getUserById = async (userId: number) => {
@@ -61,6 +42,39 @@ const getUserById = async (userId: number) => {
   });
 
   return user;
+};
+
+//* 유저 정보 업데이트
+const updateUser = async (userId: number, memberUpdateDTO: MemberUpdateDTO) => {
+  //? 넘겨받은 password를 bcrypt의 도움을 받아 암호화
+  const salt = await bcrypt.genSalt(10); //^ 매우 작은 임의의 랜덤 텍스트 salt
+  const password = await bcrypt.hash(memberUpdateDTO.password, salt); //^ 위에서 랜덤을 생성한 salt를 이용해 암호화
+
+  try {
+    const user = await prisma.member.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        userName: memberUpdateDTO?.name,
+        age: memberUpdateDTO?.age,
+        email: memberUpdateDTO?.email,
+        password,
+      },
+    });
+
+    if (!user) return null;
+
+    //? bcrypt가 DB에 저장된 기존 password와 넘겨 받은 password를 대조하고,
+    //? match false시 401을 리턴
+    const isMatch = await bcrypt.compare(memberUpdateDTO.password, user.password);
+    if (!isMatch) return sc.UNAUTHORIZED;
+
+    return user.id;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 //* 로그인
@@ -85,6 +99,14 @@ const signIn = async (userSignInDto: MemberSignInDTO) => {
   }
 };
 
+//* 유저 삭제
+const deleteUser = async (userId: number) => {
+  await prisma.member.delete({
+    where: {
+      id: userId,
+    },
+  });
+};
 
 const userService = {
   getUserById,
