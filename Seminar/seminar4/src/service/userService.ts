@@ -27,8 +27,11 @@ const createUser = async (userCreateDto: MemberCreateDTO) => {
 };
 
 //* 유저 전체 조회
-const getAllUser = async () => {
-  const data = await prisma.member.findMany();
+const getAllUser = async (page: number, limit: number) => {
+  const data = await prisma.member.findMany({
+    skip: (page - 1) * limit, //페이지수가 3이면 2*10만큼 스킵하고 시작한다~
+    take: limit,
+  });
   //findUnique : Unique한 컬럼에만 사용한다
   return data;
 };
@@ -108,13 +111,60 @@ const deleteUser = async (userId: number) => {
   });
 };
 
+//* 이름으로 유저 조회( query )
+const searchUserByName = async (keyword: string, option: string) => {
+  //? 유저 선착순
+  if (option == 'desc') {
+    const data = await prisma.member.findMany({
+      where: {
+        userName: {
+          contains: keyword,
+        },
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    });
+    return data;
+  }
+  //? 유저 오래된순
+  if (option == 'asc') {
+    const data = await prisma.member.findMany({
+      where: {
+        userName: {
+          contains: keyword,
+        },
+      },
+      orderBy: {
+        createdAt: 'asc'
+      }
+    });
+    return data;
+  }
+  //? 이름 알파벳으로 정렬
+  if (option == 'nameDesc') {
+    const data = await prisma.member.findMany({
+      where: {
+        userName: {
+          contains: keyword,
+        },
+      },
+      orderBy: {
+        userName: 'desc',
+      }
+    });
+    return data;
+  }
+};
+
 const userService = {
   getUserById,
   createUser,
   getAllUser,
   updateUser,
   deleteUser,
-  signIn
+  signIn,
+  searchUserByName,
 };
 
 export default userService;

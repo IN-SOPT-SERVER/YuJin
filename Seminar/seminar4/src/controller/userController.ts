@@ -66,7 +66,8 @@ const signInUser = async (req: Request, res: Response) => {
 
 //* 유저 전체 조회
 const getAllUser = async (req: Request, res: Response) => {
-  const data = await userService.getAllUser();
+  const { page, limit } = req.query
+  const data = await userService.getAllUser(Number(page), Number(limit));
   return res.status(sc.OK).send(success(sc.OK, rm.READ_ALL_USERS_SUCCESS, data));
 };
 
@@ -123,6 +124,18 @@ const deleteUser = async (req: Request, res: Response) => {
   return res.status(sc.OK).send(success(sc.OK, rm.DELETE_USER_SUCCESS));
 };
 
+//* GET ~/api/user?keyword=대한민
+const searchUserByName = async (req: Request, res: Response) => {
+  const { keyword, option } = req.query; // 대한민
+
+  const data = await userService.searchUserByName(keyword as string, option as string);
+
+  if (!data) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.SEARCH_USER_FAIL));
+  }
+  return res.status(sc.OK).send(success(sc.OK, rm.SEARCH_USER_SUCCESS, data));
+};
+
 const userController = {
   createUser,
   getAllUser,
@@ -130,6 +143,7 @@ const userController = {
   deleteUser,
   getUserById,
   signInUser,
+  searchUserByName
 };
 
 export default userController;

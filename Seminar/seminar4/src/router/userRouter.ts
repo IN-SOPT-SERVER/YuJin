@@ -5,6 +5,10 @@ import { auth } from "../middlewares";
 
 const router: Router = Router();
 
+//~ 이름으로 유저 검색 - GET api/user/search?keyword={}&option={}
+router.get("/search", userController.searchUserByName);
+
+
 router.get("/:userId", auth, userController.getUserById);
 
 //* 전체 유저 조회 - GET api/ user
