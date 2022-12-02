@@ -11,6 +11,11 @@ export default {
     SIGNIN_FAIL: "로그인 실패",
     ALREADY_NICKNAME: "이미 사용중인 닉네임입니다.",
 
+    //이미지
+    NO_IMAGE: "이미지가 없습니다",
+    CREATE_IMAGE_SUCCESS: "이미지 저장 성공",
+    CREATE_IMAGE_FAIL: "이미지 저장 실패",
+
     // 유저
     READ_USER_SUCCESS: "유저 조회 성공",
     READ_ALL_USERS_SUCCESS: "모든 유저 조회 성공",
@@ -18,6 +23,8 @@ export default {
     DELETE_USER_SUCCESS: "유저 탈퇴 성공",
     DELETE_USER_FAIL: "유저 탈퇴 실패",
     NO_USER: "탈퇴했거나 가입하지 않은 유저입니다.",
+    SEARCH_USER_SUCCESS: "유저 검색 성공",
+    SEARCH_USER_FAIL: "유저 검색 실패",
 
     // 토큰
     CREATE_TOKEN_SUCCESS: "토큰 재발급 성공",

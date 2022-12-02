@@ -34,6 +34,7 @@ model run {
   routine  String    @db.VarChar(100)
   stage    String    @db.VarChar(20)
   user_id  Int
+  time     String?   @db.VarChar
   User     User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "run_user_id_fk")
   is_liked is_liked?
 }
@@ -44,4 +45,13 @@ model Member {
   age      Int?
   email    String @db.VarChar(400)
   password String @db.VarChar(400)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id        Int      @id @unique @default(autoincrement())
+  image     String?  @db.VarChar(800)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
